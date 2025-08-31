@@ -49,7 +49,7 @@ markdown
 
 ---
 
-Environment vairables to add before running it locally
+# Environment vairables to add before running it locally
 
 Postgres
 DATABASE_URL="postgresql://postgres:postgres@localhost:5432/invoicesdb?schema=public"
