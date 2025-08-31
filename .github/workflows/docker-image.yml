@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: CI/CD
 
 on:
   push:
@@ -9,62 +9,33 @@ on:
       - main
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
-    env:
-      API_PORT: 3000
-      FRONTEND_PORT: 5173
 
     steps:
-      # 1. Checkout code
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2. Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: 20
+          cache: 'pnpm'
 
-      # 3. Install pnpm
-      - name: Enable pnpm
+      - name: Install pnpm
         run: corepack enable && corepack prepare pnpm@9.0.0 --activate
 
-      # 4. Install dependencies
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
-      # 5. Run tests for backend
-      - name: Run API tests
-        run: pnpm --filter api test
-
-      # 6. Run tests for frontend
-      - name: Run Frontend tests
-        run: pnpm --filter web test
-
-      # 7. Build backend
       - name: Build API
         run: pnpm --filter api build
 
-      # 8. Build frontend
       - name: Build Frontend
         run: pnpm --filter web build
 
-      # 9. Setup Docker
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      - name: Run Tests
+        run: pnpm test
 
-      # 10. Login to Docker Hub (optional, if pushing images)
-      - name: Docker Login
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      # 11. Build Docker images
       - name: Build Docker images
-        run: docker-compose -f docker-compose.prod.yml build
-
-      # 12. Deploy using Docker Compose
-      - name: Deploy services
-        run: docker-compose -f docker-compose.prod.yml up -d
+        run: docker-compose -f docker-compose.yml build
