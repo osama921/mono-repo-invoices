@@ -2,21 +2,6 @@
 
 A MonoRepoInvoices with Prisma, Docker support, and pnpm workspaces.
 
-## Table of Contents
-
-- [Project Overview](#project-overview)  
-- [Architecture](#architecture)  
-- [Tech Stack](#tech-stack)  
-- [Setup & Installation](#setup--installation)  
-- [Docker Setup](#docker-setup)  
-- [Environment Variables](#environment-variables)  
-- [Running the Application](#running-the-application)  
-- [Prisma & Database](#prisma--database)  
-- [Real-Time Events & WebSockets](#real-time-events--websockets)  
-- [Folder Structure](#folder-structure)  
-- [Scripts](#scripts)  
-- [Contributing](#contributing)  
-
 ---
 
 ## Project Overview
