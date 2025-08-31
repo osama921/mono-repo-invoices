@@ -1,0 +1,60 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    env:
+      NODE_VERSION: 20
+
+    steps:
+      # 1. Checkout repo
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # 2. Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      # 3. Install pnpm
+      - name: Enable pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@9.0.0 --activate
+
+      # 4. Install dependencies
+      - name: Install Dependencies
+        run: pnpm install
+
+      # 5. Run tests for backend (API)
+      - name: Run Backend Tests
+        run: pnpm --filter api test
+
+      # 6. Run tests for frontend
+      - name: Run Frontend Tests
+        run: pnpm --filter web test
+
+      # 7. Build backend and frontend
+      - name: Build Backend
+        run: pnpm --filter api build
+
+      - name: Build Frontend
+        run: pnpm --filter web build
+
+      # 8. Build Docker images
+      - name: Build Docker Images
+        run: docker-compose -f docker-compose.prod.yml build
+
+      # 9. Deploy using docker-compose
+      - name: Deploy Docker Containers
+        run: docker-compose -f docker-compose.prod.yml up -d
