@@ -46,10 +46,10 @@ jobs:
       - name: Run Tests
         run: pnpm test
 
-      # 8. Optional: Build Docker images locally
-      - name: Build Docker images
-        run: docker build -f apps/api/Dockerfile -t my-api:latest .
-
-      # 9. Optional: List files
+      # 8. Optional: List files
       - name: List repo files
         run: ls -R
+
+      # 9. Optional: Build Docker images locally
+      - name: Build Docker images
+        run: docker build -f apps/api/Dockerfile -t my-api:latest .
