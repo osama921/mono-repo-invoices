@@ -13,29 +13,39 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      # 1. Checkout the repo
+      - name: Checkout Repository
         uses: actions/checkout@v3
 
+      # 2. Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 20
-          cache: 'pnpm'
 
-      - name: Install pnpm
-        run: corepack enable && corepack prepare pnpm@9.0.0 --activate
+      # 3. Enable Corepack & Install pnpm
+      - name: Enable Corepack and Install pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@9.0.0 --activate
+          pnpm -v
 
-      - name: Install dependencies
+      # 4. Install dependencies
+      - name: Install Dependencies
         run: pnpm install --frozen-lockfile
 
+      # 5. Build API
       - name: Build API
         run: pnpm --filter api build
 
+      # 6. Build Frontend
       - name: Build Frontend
         run: pnpm --filter web build
 
+      # 7. Run tests
       - name: Run Tests
         run: pnpm test
 
+      # 8. Optional: Build Docker images locally
       - name: Build Docker images
         run: docker-compose -f docker-compose.yml build
