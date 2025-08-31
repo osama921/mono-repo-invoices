@@ -51,23 +51,27 @@ markdown
 
 Environment vairables to add before running it locally
 
-# Postgres
+Postgres
 DATABASE_URL="postgresql://postgres:postgres@localhost:5432/invoicesdb?schema=public"
 
-# JWT
+JWT
 JWT_SECRET="supersecret_dev_key"
 JWT_EXPIRES_IN="1d"
 
-# Redis
+Redis
 REDIS_URL="redis://localhost:6379"
 
-# Notifications
+Notifications
 SENDGRID_API_KEY=""
 EMAIL_FROM="notifications@mahamai.com"
 TWILIO_ACCOUNT_SID=""
 TWILIO_AUTH_TOKEN=""
 TWILIO_FROM="+10000000000"
 
-# Frontend
+Frontend
 NEXT_PUBLIC_API_URL="http://localhost:3001"
 
+To run locally:
+run:
+- docker compose build api
+- docker compose build web
